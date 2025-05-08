@@ -1,3 +1,49 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
+
+body {
+  font-family: sans-serif;
+  background: #fff9f9;
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app {
+  max-width: 600px;
+  width: 100%;
+}
+
+.happy-form,
+.thought-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 #000;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+textarea {
+  width: 100%;
+  height: 70px;
+  margin-top: 0.5rem;
+}
+
+button {
+  margin-top: 1rem;
+  background: #ffb3c1;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.thought-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
