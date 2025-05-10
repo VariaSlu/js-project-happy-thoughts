@@ -22,7 +22,7 @@ export const HappyForm = ({ onAddThought }) => {
 
   return (
     <form onSubmit={handleSubmit} className="happy-form">
-      <label htmlFor="message">What’s making you happy right now?</label>
+      <label htmlFor="message">Are you happy right now? Why?</label>
       <textarea
         id="message"
         value={message}

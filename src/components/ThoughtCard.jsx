@@ -17,9 +17,14 @@ export const ThoughtCard = ({ thought, onLike }) => {
     <div className="thought-card">
       <p>{thought.message}</p>
       <div className="thought-footer">
-        <button onClick={handleLike}>❤️ x {thought.hearts}</button>
-        <span>{timeAgo(thought.createdAt)}</span>
+        <button
+          className={`heart-button ${thought.hearts === 0 ? 'neutral' : 'liked'}`}
+          onClick={handleLike}
+        >
+          ❤️ {thought.hearts}
+        </button>
+        <span className="time-ago">{timeAgo(thought.createdAt)}</span>
       </div>
     </div>
   );
-}
+};
