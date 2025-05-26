@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { HappyForm } from './components/HappyForm';
 import { ThoughtList } from './components/ThoughtList';
 
-const API_URL = 'https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts';
+const API_URL = 'https://happy-thoughts-api-4ful.onrender.com/';
 
 export const App = () => {
 
@@ -19,7 +19,7 @@ export const App = () => {
   };
 
   const likeThought = (id) => {
-    fetch(`https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts/${id}/like`, {
+    fetch(`https://happy-thoughts-api-4ful.onrender.com/${id}/like`, {
       method: 'POST'
     }).then(() => {
       setThoughts(prev =>
