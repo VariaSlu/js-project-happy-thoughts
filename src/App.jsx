@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { HappyForm } from './components/HappyForm';
 import { ThoughtList } from './components/ThoughtList';
 
-const API_URL = 'https://happy-thoughts-api-4ful.onrender.com/';
+const API_URL = 'https://happy-thoughts-api-4ful.onrender.com/thoughts';
 
 export const App = () => {
 

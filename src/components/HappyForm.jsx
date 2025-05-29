@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FORM_API = 'https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts';
+const FORM_API = 'https://happy-thoughts-api-4ful.onrender.com/thoughts';
 
 export const HappyForm = ({ onAddThought }) => {
   const [message, setMessage] = useState('');
