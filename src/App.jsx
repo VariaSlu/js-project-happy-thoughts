@@ -19,7 +19,7 @@ export const App = () => {
   };
 
   const likeThought = (id) => {
-    fetch(`https://happy-thoughts-api-4ful.onrender.com/${id}/like`, {
+    fetch(`https://happy-thoughts-api-4ful.onrender.com/thoughts/${id}/like`, {
       method: 'POST'
     }).then(() => {
       setThoughts(prev =>
