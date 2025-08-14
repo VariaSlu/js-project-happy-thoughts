@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FORM_API = 'https://happy-thoughts-api-4ful.onrender.com/thoughts';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export const HappyForm = ({ onAddThought }) => {
   const [message, setMessage] = useState('');
@@ -8,7 +8,7 @@ export const HappyForm = ({ onAddThought }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(FORM_API, {
+    fetch(`${API_BASE}/thoughts`, {
       method: 'POST',
       body: JSON.stringify({ message }),
       headers: { 'Content-Type': 'application/json' }
@@ -33,5 +33,5 @@ export const HappyForm = ({ onAddThought }) => {
       />
       <button type="submit">💖 Send Happy Thought 💖</button>
     </form>
-  )
-}
+  );
+};
