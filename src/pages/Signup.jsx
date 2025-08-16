@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+// Read API base from .env and trim any trailing slash
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
 
 const Signup = ({ onSwitchToLogin }) => {
   const [email, setEmail] = useState('');
@@ -11,21 +12,33 @@ const Signup = ({ onSwitchToLogin }) => {
 
   const submit = async (e) => {
     e.preventDefault();
-    setErr(''); setOk('');
+    setOk('');
+    setErr('');
     setLoading(true);
+
     try {
       const res = await fetch(`${API_BASE}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.details || data.error || 'Signup failed');
+
+      const ct = res.headers.get('content-type') || '';
+      const data = ct.includes('application/json') ? await res.json() : await res.text();
+
+      if (!res.ok) {
+        const msg =
+          typeof data === 'string'
+            ? `Signup failed (${res.status})`
+            : data.details || data.error || 'Signup failed';
+        throw new Error(msg);
+      }
 
       setOk('Signup successful! Please log in.');
-      onSwitchToLogin?.(); // flip UI back to Login
+      // optionally switch to login automatically:
+      onSwitchToLogin?.();
     } catch (e) {
-      setErr(e.message);
+      setErr(e.message || 'Signup failed');
     } finally {
       setLoading(false);
     }
@@ -34,15 +47,35 @@ const Signup = ({ onSwitchToLogin }) => {
   return (
     <form onSubmit={submit} className="card" style={{ maxWidth: 420, margin: '1rem auto' }}>
       <h2>Sign up</h2>
-      <label>Email
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <label>
+        Email
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
       </label>
-      <label>Password
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+
+      <label>
+        Password
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength={6}
+          autoComplete="new-password"
+        />
       </label>
-      {ok && <p style={{ color: 'green' }}>{ok}</p>}
-      {err && <p style={{ color: 'crimson' }}>{err}</p>}
-      <button type="submit" disabled={loading}>{loading ? 'Creating…' : 'Create account'}</button>
+
+      {ok && <p style={{ color: 'green', marginTop: 8 }}>{ok}</p>}
+      {err && <p style={{ color: 'crimson', marginTop: 8 }}>{err}</p>}
+
+      <button type="submit" disabled={loading}>
+        {loading ? 'Creating…' : 'Create account'}
+      </button>
     </form>
   );
 };

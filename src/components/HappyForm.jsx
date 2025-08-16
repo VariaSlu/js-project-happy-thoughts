@@ -1,23 +1,44 @@
 import React, { useState } from 'react';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const FORM_API = `${API_BASE}/thoughts`;
 
-export const HappyForm = ({ onAddThought }) => {
+
+export const HappyForm = ({ onAddThought, token }) => {
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    fetch(`${API_BASE}/thoughts`, {
-      method: 'POST',
-      body: JSON.stringify({ message }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(newThought => {
-        onAddThought(newThought);
-        setMessage('');
+    try {
+      const res = await fetch(FORM_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ message }),
       });
+
+      if (!res.ok) {
+        // 401 will land here if token missing/invalid
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Request failed (${res.status})`);
+      }
+
+      const newThought = await res.json();
+      onAddThought(newThought);
+      setMessage('');
+    } catch (err) {
+      setError(err.message);
+      console.error('POST /thoughts failed:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,12 +47,15 @@ export const HappyForm = ({ onAddThought }) => {
       <textarea
         id="message"
         value={message}
-        onChange={e => setMessage(e.target.value)}
-        minLength="5"
-        maxLength="140"
+        onChange={(e) => setMessage(e.target.value)}
+        minLength={5}
+        maxLength={140}
         required
       />
-      <button type="submit">💖 Send Happy Thought 💖</button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Sending…' : '💖 Send Happy Thought 💖'}
+      </button>
+      {error && <p style={{ color: 'crimson' }}>{error}</p>}
     </form>
   );
 };

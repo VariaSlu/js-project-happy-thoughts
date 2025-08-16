@@ -4,7 +4,7 @@ import { ThoughtCard } from './ThoughtCard';
 export const ThoughtList = ({ thoughts, onLike, onDelete, onUpdate, currentUserId }) => {
   return (
     <div className="thought-list">
-      {thoughts.map(thought => (
+      {thoughts.map((thought) => (
         <ThoughtCard
           key={thought._id}
           thought={thought}
