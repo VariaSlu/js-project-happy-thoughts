@@ -76,17 +76,22 @@ export const App = () => {
 
   return (
     <div className="app">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-        <h1>❤️ Happy Thoughts ❤️</h1>
+      <header className="app-header">
+        <h1 className="title">
+          <span role="img" aria-label="heart">❤️</span> Happy Thoughts <span role="img" aria-label="heart">❤️</span>
+        </h1>
+
         {token ? (
-          <div>
-            <span style={{ marginRight: 8 }}>Logged in{email ? ` as ${email}` : ''}</span>
-            <button onClick={logout}>Logout</button>
+          <div className="userline">
+            <span className="userline-text">
+              Logged in as <strong>{email}</strong>
+            </span>
+            <button className="btn logout" onClick={logout}>Logout</button>
           </div>
         ) : (
-          <div>
-            <button onClick={() => setMode('login')}>Login</button>
-            <button onClick={() => setMode('signup')} style={{ marginLeft: 8 }}>Sign up</button>
+          <div className="auth-actions">
+            <button className="btn" onClick={() => setMode('login')}>Login</button>
+            <button className="btn" onClick={() => setMode('signup')}>Sign up</button>
           </div>
         )}
       </header>
